@@ -23,23 +23,38 @@ struct Event {
 }
 
 async fn start() -> (ContainerAsync<GenericImage>, Session) {
-    let container = GenericImage::new("scylladb/scylla", "latest")
-        .with_exposed_port(9042.tcp())
-        .with_wait_for(WaitFor::message_on_stderr("serving"))
-        .with_cmd([
-            "--smp",
-            "1",
-            "--memory",
-            "750M",
-            "--overprovisioned",
-            "1",
-            "--developer-mode",
-            "1",
-        ])
-        .with_startup_timeout(Duration::from_secs(180))
-        .start()
-        .await
-        .expect("start scylla container");
+    // Docker occasionally hands out a host port that is already taken ("address already in use"); retry.
+    let mut container = None;
+    for attempt in 1..=4 {
+        let started = GenericImage::new("scylladb/scylla", "latest")
+            .with_exposed_port(9042.tcp())
+            .with_wait_for(WaitFor::message_on_stderr("serving"))
+            .with_cmd([
+                "--smp",
+                "1",
+                "--memory",
+                "750M",
+                "--overprovisioned",
+                "1",
+                "--developer-mode",
+                "1",
+            ])
+            .with_startup_timeout(Duration::from_secs(180))
+            .start()
+            .await;
+        match started {
+            Ok(c) => {
+                container = Some(c);
+                break;
+            }
+            Err(e) if attempt < 4 => {
+                eprintln!("container start failed (attempt {attempt}): {e}");
+                tokio::time::sleep(Duration::from_secs(3)).await;
+            }
+            Err(e) => panic!("start scylla container: {e}"),
+        }
+    }
+    let container = container.unwrap();
     let host = container.get_host().await.unwrap();
     let port = container.get_host_port_ipv4(9042).await.unwrap();
     let node = format!("{host}:{port}");
