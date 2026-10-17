@@ -32,6 +32,7 @@ struct Event {
 }
 
 #[derive(DeserializeRow)]
+#[allow(dead_code)] // fields exist so decoding does the same work as the other contenders
 struct RawRow {
     tenant: String,
     day: i32,
