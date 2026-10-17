@@ -22,7 +22,11 @@ struct Event {
     tags: Option<Vec<String>>,
 }
 
-async fn start() -> (ContainerAsync<GenericImage>, Session) {
+async fn start() -> (Option<ContainerAsync<GenericImage>>, Session) {
+    // CI starts ScyllaDB itself and points us at it; locally testcontainers does it.
+    if let Ok(node) = std::env::var("CQLX_TEST_NODE") {
+        return (None, connect(&node).await);
+    }
     // Docker occasionally hands out a host port that is already taken ("address already in use"); retry.
     let mut container = None;
     for attempt in 1..=4 {
@@ -57,11 +61,14 @@ async fn start() -> (ContainerAsync<GenericImage>, Session) {
     let container = container.unwrap();
     let host = container.get_host().await.unwrap();
     let port = container.get_host_port_ipv4(9042).await.unwrap();
-    let node = format!("{host}:{port}");
+    (Some(container), connect(&format!("{host}:{port}")).await)
+}
+
+async fn connect(node: &str) -> Session {
     let mut last = None;
-    for _ in 0..60 {
-        match Session::connect_single_node(&node).await {
-            Ok(s) => return (container, s),
+    for _ in 0..90 {
+        match Session::connect_single_node(node).await {
+            Ok(s) => return s,
             Err(e) => {
                 last = Some(e);
                 tokio::time::sleep(Duration::from_secs(2)).await;

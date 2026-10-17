@@ -27,5 +27,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - name: ScyllaDB integration tests (testcontainers)
+      - name: Start ScyllaDB
+        run: docker run -d --name scylla -p 9042:9042 scylladb/scylla --smp 1 --memory 750M --overprovisioned 1 --developer-mode 1
+      - name: ScyllaDB integration tests
+        env:
+          CQLX_TEST_NODE: 127.0.0.1:9042
         run: cargo test -p cqlx --test scylla_integration -- --ignored
