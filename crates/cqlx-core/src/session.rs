@@ -70,6 +70,17 @@ impl Session {
         }
     }
 
+    /// Unwraps the driver session if this is the only clone (for APIs that take ownership, e.g. `CachingSession`).
+    pub fn try_into_driver(self) -> Result<Inner, Self> {
+        match Arc::try_unwrap(self.inner) {
+            Ok(inner) => Ok(inner),
+            Err(inner) => Err(Self {
+                inner,
+                prepared: self.prepared,
+            }),
+        }
+    }
+
     /// The underlying driver session.
     pub fn driver(&self) -> &Inner {
         &self.inner

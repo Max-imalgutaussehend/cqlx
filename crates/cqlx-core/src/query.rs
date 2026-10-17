@@ -159,7 +159,9 @@ impl QueryState {
                 })
                 .unwrap_or(usize::MAX)
         };
-        restrictions.sort_by_key(|r| rank(r.col));
+        if !restrictions.is_sorted_by_key(|r| rank(r.col)) {
+            restrictions.sort_by_key(|r| rank(r.col));
+        }
 
         for p in shape.partition {
             let n = restrictions.iter().filter(|r| r.col == *p).count();
@@ -191,8 +193,8 @@ impl QueryState {
             ranged = r.op != Op::Eq;
             expected += 1;
         }
-        let mut sql = String::new();
-        let mut values = BoundValues::new();
+        let mut sql = String::with_capacity(32 * restrictions.len());
+        let mut values = BoundValues(Vec::with_capacity(restrictions.len()));
         for (i, r) in restrictions.into_iter().enumerate() {
             let _ = write!(
                 sql,

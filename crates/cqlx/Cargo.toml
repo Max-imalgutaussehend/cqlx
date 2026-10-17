@@ -22,3 +22,14 @@ tokio = { workspace = true }
 testcontainers = "0.28"
 uuid = { version = "1", features = ["v4"] }
 trybuild = "1"
+criterion = { version = "0.8", features = ["async_tokio"] }
+charybdis = "1.1"
+serde = { version = "1", features = ["derive"] }
+
+[[bench]]
+name = "build"
+harness = false
+
+[[bench]]
+name = "db"
+harness = false
