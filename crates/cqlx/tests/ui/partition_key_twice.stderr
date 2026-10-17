@@ -1,0 +1,10 @@
+error[E0599]: no method named `tenant` found for struct `EventQuery<Provided>` in the current scope
+  --> tests/ui/partition_key_twice.rs:11:47
+   |
+ 4 | #[derive(CqlEntity, DeserializeRow)]
+   |          --------- method `tenant` not found for this struct
+...
+11 |     let _ = Event::query().tenant("a".into()).tenant("b".into());
+   |                                               ^^^^^^ method not found in `EventQuery<Provided>`
+   |
+   = note: the method was found for `EventQuery<Missing>`

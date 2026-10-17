@@ -1,0 +1,5 @@
+error: entity needs at least one `#[cqlx(partition_key)]` (or `primary_key`) field
+ --> tests/ui/no_partition_key_attr.rs:5:8
+  |
+5 | struct Event {
+  |        ^^^^^

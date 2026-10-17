@@ -1,0 +1,10 @@
+error[E0599]: no method named `build` found for struct `EventQuery<Provided, Missing>` in the current scope
+  --> tests/ui/missing_partition_key.rs:15:47
+   |
+ 4 | #[derive(CqlEntity, DeserializeRow)]
+   |          --------- method `build` not found for this struct
+...
+15 |     let _ = Event::query().tenant("a".into()).build();
+   |                                               ^^^^^ method not found in `EventQuery<Provided, Missing>`
+   |
+   = note: the method was found for `EventQuery<Provided, Provided>`
