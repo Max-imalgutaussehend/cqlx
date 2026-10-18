@@ -7,4 +7,4 @@ error[E0599]: no method named `tenant` found for struct `EventQuery<Provided>` i
 11 |     let _ = Event::query().tenant("a".into()).tenant("b".into());
    |                                               ^^^^^^ method not found in `EventQuery<Provided>`
    |
-   = note: the method was found for `EventQuery<Missing>`
+   = note: the method was found for `EventQuery<Missing, F>`

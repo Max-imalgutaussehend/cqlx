@@ -1,0 +1,5 @@
+error: a table with a counter column can only have counter columns besides its primary key
+  --> tests/ui/counter_with_regular_column.rs:10:5
+   |
+10 |     title: String,
+   |     ^^^^^

@@ -567,18 +567,19 @@ dependencies = [
 
 [[package]]
 name = "cqlc-core"
-version = "1.0.1"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "084c5b57aae27ecbc7e80d72ac0c3386614315417158fb3517722cc8bfd41c5b"
+checksum = "2279000de54fd4e0b584b296e32aa38ef56ba8883f1634d6c374440a0eb70d69"
 
 [[package]]
 name = "cqlx"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "charybdis",
  "cqlx-core",
  "cqlx-macros",
  "criterion",
+ "futures",
  "scylla",
  "serde",
  "testcontainers",
@@ -589,7 +590,7 @@ dependencies = [
 
 [[package]]
 name = "cqlx-cli"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -604,9 +605,10 @@ dependencies = [
 
 [[package]]
 name = "cqlx-core"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "async-trait",
+ "futures",
  "proc-macro2",
  "quote",
  "scylla",
@@ -616,7 +618,7 @@ dependencies = [
 
 [[package]]
 name = "cqlx-macros"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "cqlx-core",
  "proc-macro2",

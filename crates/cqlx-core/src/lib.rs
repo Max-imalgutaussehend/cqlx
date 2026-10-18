@@ -12,8 +12,12 @@ pub mod session;
 
 pub use error::{Error, Result};
 pub use meta::{ColumnMeta, EntityMeta, KeyRole, Order};
-pub use query::{BoundValues, Built, Missing, Op, Provided, QueryState, Shape};
-pub use session::Session;
+pub use query::{
+    BoundValues, Built, Filtering, HasAssignment, Missing, NoAssignment, NoFilter, Op, Provided,
+    QueryState, SetOp, Shape, UpdateState,
+};
+pub use scylla::statement::{Consistency, SerialConsistency};
+pub use session::{BatchBuilder, BatchKind, InsertOptions, SchemaIssue, Session};
 
 use scylla::deserialize::row::DeserializeRow;
 
@@ -40,6 +44,15 @@ pub trait CqlModel: Sized + 'static + for<'f, 'm> DeserializeRow<'f, 'm> {
     /// Bind values for [`Self::INSERT_CQL`], in column order.
     fn insert_values(&self) -> BoundValues<'_>;
 
+    /// `DELETE FROM ... WHERE <primary key>` text.
+    const DELETE_CQL: &'static str;
+
+    /// Bind values of the primary key for [`Self::DELETE_CQL`], in key order.
+    fn key_values(&self) -> BoundValues<'_>;
+
     /// Static metadata for this entity.
     fn meta() -> &'static EntityMeta;
 }
+
+/// Marker for entities that can be inserted. Not implemented for counter tables, which only support `UPDATE`.
+pub trait Insertable {}

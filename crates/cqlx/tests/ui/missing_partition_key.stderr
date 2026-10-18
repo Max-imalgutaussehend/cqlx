@@ -7,4 +7,4 @@ error[E0599]: no method named `build` found for struct `EventQuery<Provided, Mis
 15 |     let _ = Event::query().tenant("a".into()).build();
    |                                               ^^^^^ method not found in `EventQuery<Provided, Missing>`
    |
-   = note: the method was found for `EventQuery<Provided, Provided>`
+   = note: the method was found for `EventQuery<Provided, Provided, F>`

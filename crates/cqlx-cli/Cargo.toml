@@ -18,7 +18,7 @@ path = "src/main.rs"
 
 [dependencies]
 cqlx-core = { workspace = true, features = ["parse"] }
-cqlc-core = "1.0.1"
+cqlc-core = "1.1"
 syn = { workspace = true }
 quote = { workspace = true }
 proc-macro2 = { workspace = true }

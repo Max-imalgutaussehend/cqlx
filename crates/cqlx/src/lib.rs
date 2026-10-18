@@ -23,17 +23,17 @@
 //! Forgetting a partition key is a *compile error*, because `fetch`/`build`/`delete` only exist on
 //! the builder once every partition key has moved from [`Missing`] to [`Provided`].
 //!
-//! ## Attributes
+//! ## What you get
 //!
-//! | Where  | Attribute | Meaning |
-//! |--------|-----------|---------|
-//! | struct | `table_name = "..."`, `keyspace = "..."` | Table (default: snake_case struct name) and keyspace |
-//! | field  | `partition_key` / `primary_key` | Part of the partition key (declaration order) |
-//! | field  | `clustering_key(order = "asc"\|"desc")` | Clustering column (declaration order) |
-//! | field  | `rename = "..."` | CQL column name |
-//! | field  | `cql_type = "..."` | Override the inferred CQL type |
+//! * `Entity::query()`: type-state reads (`fetch`, `first`, `count`, `stream`), `IN`, ordering, paging, consistency.
+//! * `Entity::update()`: partial updates, collection append/remove, counters, TTL, lightweight transactions.
+//! * `Session`: inserts with options, batches, streaming, `validate_schema` and `migrate`.
+//!
+//! See the [README](https://github.com/Max-imalgutaussehend/cqlx) for the full feature table and the attribute reference.
 
 pub use cqlx_core::*;
 pub use cqlx_macros::CqlEntity;
+/// Re-export of `futures`, for the `Stream` returned by `stream()`.
+pub use futures;
 /// Re-export of the driver, so users can `use cqlx::scylla::DeserializeRow`.
 pub use scylla;

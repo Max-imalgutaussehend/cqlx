@@ -1,0 +1,52 @@
+error[E0277]: the trait bound `Hits: Insertable` is not satisfied
+  --> tests/ui/insert_into_counter_table.rs:14:28
+   |
+14 |     let _ = session.insert(h).await;
+   |                     ------ ^ unsatisfied trait bound
+   |                     |
+   |                     required by a bound introduced by this call
+   |
+help: the trait `Insertable` is not implemented for `Hits`
+  --> tests/ui/insert_into_counter_table.rs:6:1
+   |
+ 6 | struct Hits {
+   | ^^^^^^^^^^^
+note: required by a bound in `cqlx::Session::insert`
+  --> $WORKSPACE/crates/cqlx-core/src/session.rs
+   |
+   |     pub async fn insert<M: CqlModel + Insertable>(&self, entity: &M) -> Result<()> {
+   |                                       ^^^^^^^^^^ required by this bound in `Session::insert`
+
+error[E0277]: the trait bound `Hits: Insertable` is not satisfied
+  --> tests/ui/insert_into_counter_table.rs:14:13
+   |
+14 |     let _ = session.insert(h).await;
+   |             ^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+   |
+help: the trait `Insertable` is not implemented for `Hits`
+  --> tests/ui/insert_into_counter_table.rs:6:1
+   |
+ 6 | struct Hits {
+   | ^^^^^^^^^^^
+note: required by a bound in `cqlx::Session::insert`
+  --> $WORKSPACE/crates/cqlx-core/src/session.rs
+   |
+   |     pub async fn insert<M: CqlModel + Insertable>(&self, entity: &M) -> Result<()> {
+   |                                       ^^^^^^^^^^ required by this bound in `Session::insert`
+
+error[E0277]: the trait bound `Hits: Insertable` is not satisfied
+  --> tests/ui/insert_into_counter_table.rs:14:31
+   |
+14 |     let _ = session.insert(h).await;
+   |                               ^^^^^ unsatisfied trait bound
+   |
+help: the trait `Insertable` is not implemented for `Hits`
+  --> tests/ui/insert_into_counter_table.rs:6:1
+   |
+ 6 | struct Hits {
+   | ^^^^^^^^^^^
+note: required by a bound in `cqlx::Session::insert`
+  --> $WORKSPACE/crates/cqlx-core/src/session.rs
+   |
+   |     pub async fn insert<M: CqlModel + Insertable>(&self, entity: &M) -> Result<()> {
+   |                                       ^^^^^^^^^^ required by this bound in `Session::insert`

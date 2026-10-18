@@ -1,0 +1,10 @@
+error[E0599]: no method named `where_note_eq` found for struct `ItemQuery<Provided>` in the current scope
+  --> tests/ui/filter_without_allow_filtering.rs:13:33
+   |
+ 4 | #[derive(CqlEntity, DeserializeRow)]
+   |          --------- method `where_note_eq` not found for this struct
+...
+13 |     let _ = Item::query().id(1).where_note_eq("x".into());
+   |                                 ^^^^^^^^^^^^^ method not found in `ItemQuery<Provided>`
+   |
+   = note: the method was found for `ItemQuery<Provided, Filtering>`

@@ -12,6 +12,9 @@ pub enum Error {
     /// The query is not valid CQL for this table (for example a clustering gap).
     #[error("invalid query: {0}")]
     InvalidQuery(String),
+    /// The entity and the table in the cluster disagree.
+    #[error("schema: {0}")]
+    Schema(String),
 }
 
 impl Error {

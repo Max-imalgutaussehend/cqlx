@@ -1,0 +1,14 @@
+error[E0599]: no method named `build` found for struct `ItemUpdate<Provided, NoAssignment>` in the current scope
+  --> tests/ui/update_without_assignment.rs:13:34
+   |
+ 4 | #[derive(CqlEntity, DeserializeRow)]
+   |          --------- method `build` not found for this struct
+...
+13 |     let _ = Item::update().id(1).build();
+   |                                  ^^^^^ method not found in `ItemUpdate<Provided, NoAssignment>`
+   |
+   = note: the method was found for `ItemUpdate<Provided, HasAssignment>`
+help: one of the expressions' fields has a method of the same name
+   |
+13 |     let _ = Item::update().id(1).state.build();
+   |                                  ++++++
